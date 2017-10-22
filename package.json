@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/hhirsch/contributor-widgets#readme",
   "devDependencies": {
+    "babel-preset-es2015": "^6.24.1",
+    "babelify": "^7.3.0",
     "browserify": "^14.5.0",
     "gulp": "^3.9.1",
     "gulp-sourcemaps": "^2.6.1",

@@ -1,8 +1,8 @@
 import { sayHello } from "./Greet";
 
 function showHello(divName: string, name: string) {
-    const elt = document.getElementById(divName);
-    elt.innerText = sayHello(name);
+    const element = document.getElementById(divName);
+    element.innerText = sayHello(name);
 }
 
 showHello("greeting", "TypeScript");
