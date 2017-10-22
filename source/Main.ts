@@ -1,16 +1,22 @@
 import { sayHello } from "./Greet";
 import { getJson } from "./Json";
 
+interface Contributor {
+    contributions:number,
+    html_url: string,
+    login: string
+}
+
 function showHello(divName: string, name: string) {
     const element = document.getElementById(divName);
     element.innerText = sayHello(name);
 }
 
-function sortByContributions(x: any, y: any) {
+function sortByContributions(x: Contributor, y: Contributor) {
   return  y.contributions - x.contributions;
 }
 
-function renderList(targetDiv: string, data: any) {
+function renderList(targetDiv: string, data: Contributor[]) {
               data.sort(sortByContributions);
               var blockedUsers = new Array("gitter-badger");
               for(var n=0;n<data.length;n++){
@@ -28,7 +34,7 @@ function renderList(targetDiv: string, data: any) {
 
 function showContributionWidget(targetDiv: string, url: string): void {
     getJson(url,
-            function(error: string, data: string) {
+            function(error: string, data: Contributor[]) {
                 if (error !== null) {
                     console.log('Could not load data: ' + error);
                 } else {
