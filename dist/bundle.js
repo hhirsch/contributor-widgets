@@ -2,15 +2,6 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-function sayHello(name) {
-    return "Hello from " + name;
-}
-exports.sayHello = sayHello;
-
-},{}],2:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
 function getJson(url, callback) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
@@ -28,16 +19,11 @@ function getJson(url, callback) {
 exports.getJson = getJson;
 ;
 
-},{}],3:[function(require,module,exports){
+},{}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Greet_1 = require("./Greet");
 var Json_1 = require("./Json");
-function showHello(divName, name) {
-    var element = document.getElementById(divName);
-    element.innerText = Greet_1.sayHello(name);
-}
 function sortByContributions(x, y) {
     return y.contributions - x.contributions;
 }
@@ -57,17 +43,17 @@ function renderList(targetDiv, data) {
     }
 }
 function showContributionWidget(targetDiv, url) {
-    Json_1.getJson(url, function (error, data) {
+    var dataHandler = function dataHandler(error, data) {
         if (error !== null) {
             console.log('Could not load data: ' + error);
         } else {
             renderList(targetDiv, data);
         }
-    });
+    };
+    Json_1.getJson(url, dataHandler);
 }
 showContributionWidget('contributors', 'https://api.github.com/repos/GlPortal/glPortal/contributors');
-showHello("greeting", "TypeScript");
 
-},{"./Greet":1,"./Json":2}]},{},[3])
+},{"./Json":1}]},{},[2])
 
 //# sourceMappingURL=bundle.js.map

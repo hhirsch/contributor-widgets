@@ -1,15 +1,9 @@
-import { sayHello } from "./Greet";
 import { getJson } from "./Json";
 
 interface Contributor {
     contributions:number,
     html_url: string,
     login: string
-}
-
-function showHello(divName: string, name: string) {
-    const element = document.getElementById(divName);
-    element.innerText = sayHello(name);
 }
 
 function sortByContributions(x: Contributor, y: Contributor) {
@@ -33,12 +27,14 @@ function renderList(targetDiv: string, data: Contributor[]) {
 }
 
 function showContributionWidget(targetDiv: string, url: string): void {
-    getJson(url,
-            function(error: string, data: Contributor[]) {
-                if (error !== null) {
-                    console.log('Could not load data: ' + error);
-                } else {
-                    renderList(targetDiv, data);
-                }
-            });
+    var dataHandler = function(error: string, data: Contributor[]){
+        if (error !== null) {
+            console.log('Could not load data: ' + error);
+        } else {
+            renderList(targetDiv, data);
+        }
+    }
+    getJson(url, dataHandler);
 }
+
+showContributionWidget('contributors','https://api.github.com/repos/GlPortal/glPortal/contributors');
