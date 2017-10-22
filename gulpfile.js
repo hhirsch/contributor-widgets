@@ -8,23 +8,23 @@ var paths = {
     pages: ['source/*.html']
 };
 
-gulp.task('copyHtml', function () {
+gulp.task('copyDist', function () {
     return gulp.src(paths.pages)
         .pipe(gulp.dest('dist'));
 });
 
-gulp.task('default', ['copyHtml'], function () {
-    return browserify({
-        basedir: '.',
-        debug: true,
-        entries: ['source/Main.ts'],
-        cache: {},
-        packageCache: {}
-    })
+gulp.task('compile', function () {
+  return browserify({
+    basedir: '.',
+    debug: true,
+    entries: ['source/Main.ts'],
+    cache: {},
+    packageCache: {}
+  })
     .plugin(tsify)
     .transform('babelify', {
-        presets: ['es2015'],
-        extensions: ['.ts']
+      presets: ['es2015'],
+      extensions: ['.ts']
     })
     .bundle()
     .pipe(source('bundle.js'))
@@ -32,4 +32,13 @@ gulp.task('default', ['copyHtml'], function () {
     .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('dist'));
+});
+
+gulp.task('default', function() {
+   // watch for CSS changes
+   gulp.watch('source/*.ts', function() {
+      // run styles upon changes
+     gulp.run('compile');
+     gulp.run('copyDist');
+   });
 });
