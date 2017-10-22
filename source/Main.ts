@@ -42,6 +42,3 @@ function showContributionWidget(targetDiv: string, url: string): void {
                 }
             });
 }
-
-showContributionWidget('contributors', 'https://api.github.com/repos/GlPortal/glPortal/contributors');
-showHello("greeting", "TypeScript");

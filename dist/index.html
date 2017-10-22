@@ -2,12 +2,16 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>Hello World!</title>
+        <title>Contribution Widget Test Page</title>
     </head>
     <body>
-        <p id="greeting">Loading ...</p>
+        <h1>Contribution Widget</h1>
         <div id="contributors">
         </div>
         <script src="bundle.js"></script>
+        <script
+            showContributionWidget('contributors',
+            'https://api.github.com/repos/GlPortal/glPortal/contributors');
+       </script>
     </body>
 </html>
