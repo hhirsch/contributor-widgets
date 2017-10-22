@@ -1,4 +1,8 @@
-function hello(compiler) {
-    console.log("Hello from " + compiler);
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var Greet_1 = require("./Greet");
+function showHello(divName, name) {
+    var elt = document.getElementById(divName);
+    elt.innerText = Greet_1.sayHello(name);
 }
-hello("TypeScript");
+showHello("greeting", "TypeScript");

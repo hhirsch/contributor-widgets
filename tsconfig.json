@@ -1,6 +1,7 @@
 {
     "files": [
-        "source/Main.ts"
+      "source/Main.ts",
+      "source/Greet.ts"
     ],
     "compilerOptions": {
         "noImplicitAny": true,
