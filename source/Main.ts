@@ -17,19 +17,19 @@ function sortByContributions(x: Contributor, y: Contributor) {
 }
 
 function renderList(targetDiv: string, data: Contributor[]) {
-              data.sort(sortByContributions);
-              var blockedUsers = new Array("gitter-badger");
-              for(var n=0;n<data.length;n++){
-                var contributor = data[n];
-                if(blockedUsers.indexOf(contributor.login) == -1) {
-                  var contributorDiv = document.createElement('div');
-                  var contributorHtml = '<a href=\"' + contributor.html_url + '\" target=\"_blank\">';
-                  contributorHtml += contributor.login;
-                  contributorHtml += '</a></br>';
-                  contributorDiv.innerHTML = contributorHtml;
-                  document.getElementById(targetDiv).appendChild(contributorDiv);
-                }
-              }
+    data.sort(sortByContributions);
+    var blockedUsers = new Array("gitter-badger");
+    for(var n=0;n<data.length;n++){
+        var contributor = data[n];
+        if(blockedUsers.indexOf(contributor.login) == -1) {
+            var contributorDiv = document.createElement('div');
+            var contributorHtml = '<a href=\"' + contributor.html_url + '\" target=\"_blank\">';
+            contributorHtml += contributor.login;
+            contributorHtml += '</a></br>';
+            contributorDiv.innerHTML = contributorHtml;
+            document.getElementById(targetDiv).appendChild(contributorDiv);
+        }
+    }
 }
 
 function showContributionWidget(targetDiv: string, url: string): void {
