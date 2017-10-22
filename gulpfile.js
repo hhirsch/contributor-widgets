@@ -35,10 +35,11 @@ gulp.task('compile', function () {
 });
 
 gulp.task('default', function() {
-   // watch for CSS changes
-   gulp.watch('source/*.ts', function() {
-      // run styles upon changes
+  gulp.watch('source/*.ts',  function() {
      gulp.run('compile');
      gulp.run('copyDist');
-   });
+  });
+  gulp.watch('source/*.html',  function() {
+    gulp.run('copyDist');
+  });
 });
