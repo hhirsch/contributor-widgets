@@ -36,5 +36,4 @@ function showContributionWidget(targetDiv: string, url: string): void {
     }
     getJson(url, dataHandler);
 }
-
-showContributionWidget('contributors','https://api.github.com/repos/GlPortal/glPortal/contributors');
+(<any>window).showContributionWidget = showContributionWidget;

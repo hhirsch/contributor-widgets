@@ -52,7 +52,7 @@ function showContributionWidget(targetDiv, url) {
     };
     Json_1.getJson(url, dataHandler);
 }
-showContributionWidget('contributors', 'https://api.github.com/repos/GlPortal/glPortal/contributors');
+window.showContributionWidget = showContributionWidget;
 
 },{"./Json":1}]},{},[2])
 
