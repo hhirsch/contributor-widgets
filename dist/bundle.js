@@ -27,19 +27,24 @@ var Json_1 = require("./Json");
 function sortByContributions(x, y) {
     return y.contributions - x.contributions;
 }
-function renderList(targetDiv, data) {
-    data.sort(sortByContributions);
-    var blockedUsers = new Array("gitter-badger");
-    for (var n = 0; n < data.length; n++) {
-        var contributor = data[n];
-        if (blockedUsers.indexOf(contributor.login) == -1) {
-            var contributorDiv = document.createElement('div');
-            var contributorHtml = '<a href=\"' + contributor.html_url + '\" target=\"_blank\">';
-            contributorHtml += contributor.login;
-            contributorHtml += '</a></br>';
-            contributorDiv.innerHTML = contributorHtml;
-            document.getElementById(targetDiv).appendChild(contributorDiv);
+function renderList(targetDivId, data) {
+    var targetDiv = document.getElementById(targetDivId);
+    if (targetDiv != null) {
+        data.sort(sortByContributions);
+        var blockedUsers = new Array("gitter-badger");
+        for (var n = 0; n < data.length; n++) {
+            var contributor = data[n];
+            if (blockedUsers.indexOf(contributor.login) == -1) {
+                var contributorDiv = document.createElement('div');
+                var contributorHtml = '<a href=\"' + contributor.html_url + '\" target=\"_blank\">';
+                contributorHtml += contributor.login;
+                contributorHtml += '</a></br>';
+                contributorDiv.innerHTML = contributorHtml;
+                targetDiv.appendChild(contributorDiv);
+            }
         }
+    } else {
+        console.log('Target diff for contributions widget with id ' + targetDivId + ' not found.');
     }
 }
 function installContributionWidget(targetDiv, url) {
