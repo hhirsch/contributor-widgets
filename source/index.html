@@ -6,11 +6,16 @@
     </head>
     <body>
         <h1>Contribution Widget</h1>
+        <h1>Game</h1>
         <div id="contributors">
+        </div>
+        <h1>Engine</h1>
+        <div id="contributors-radix">
         </div>
         <script src="./bundle.js"></script>
         <script>
-            showContributionWidget('contributors','https://api.github.com/repos/GlPortal/glPortal/contributors');
+         installGithubContributionWidget('contributors', 'GlPortal/glPortal');
+         installGithubContributionWidget('contributors-radix', 'GlPortal/RadixEngine');
         </script>
     </body>
 </html>

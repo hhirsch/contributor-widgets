@@ -26,7 +26,7 @@ function renderList(targetDiv: string, data: Contributor[]) {
     }
 }
 
-function showContributionWidget(targetDiv: string, url: string): void {
+function installContributionWidget(targetDiv: string, url: string): void {
     var dataHandler = function(error: string, data: Contributor[]){
         if (error !== null) {
             console.log('Could not load data: ' + error);
@@ -36,4 +36,10 @@ function showContributionWidget(targetDiv: string, url: string): void {
     }
     getJson(url, dataHandler);
 }
-(<any>window).showContributionWidget = showContributionWidget;
+
+function installGithubContributionWidget(targetDiv: string, repo: string): void {
+    installContributionWidget(targetDiv, 'https://api.github.com/repos/' + repo + '/contributors');
+}
+
+(<any>window).installContributionWidget = installContributionWidget;
+(<any>window).installGithubContributionWidget = installGithubContributionWidget;

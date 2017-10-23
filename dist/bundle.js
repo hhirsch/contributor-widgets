@@ -42,7 +42,7 @@ function renderList(targetDiv, data) {
         }
     }
 }
-function showContributionWidget(targetDiv, url) {
+function installContributionWidget(targetDiv, url) {
     var dataHandler = function dataHandler(error, data) {
         if (error !== null) {
             console.log('Could not load data: ' + error);
@@ -52,7 +52,11 @@ function showContributionWidget(targetDiv, url) {
     };
     Json_1.getJson(url, dataHandler);
 }
-window.showContributionWidget = showContributionWidget;
+function installGithubContributionWidget(targetDiv, repo) {
+    installContributionWidget(targetDiv, 'https://api.github.com/repos/' + repo + '/contributors');
+}
+window.installContributionWidget = installContributionWidget;
+window.installGithubContributionWidget = installGithubContributionWidget;
 
 },{"./Json":1}]},{},[2])
 
