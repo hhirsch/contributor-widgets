@@ -2,65 +2,104 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-function getJson(url, callback) {
+function getJsonCallback(widget, url, callback) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
     xhr.responseType = 'json';
     xhr.onload = function () {
         var status = xhr.status;
         if (status === 200) {
-            callback(null, xhr.response);
+            callback(widget, null, xhr.response);
         } else {
-            callback(status, xhr.response);
+            callback(widget, status, xhr.response);
         }
     };
     xhr.send();
 }
-exports.getJson = getJson;
+exports.getJsonCallback = getJsonCallback;
+;
+function getJsonFromUrl(url) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.responseType = 'json';
+    xhr.onload = function () {
+        var status = xhr.status;
+        if (status !== 200) {
+            throw new Error('Got error ' + status + ' for URL ' + url);
+        }
+    };
+    xhr.send();
+}
+exports.getJsonFromUrl = getJsonFromUrl;
 ;
 
 },{}],2:[function(require,module,exports){
 "use strict";
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Json_1 = require("./Json");
 function sortByContributions(x, y) {
     return y.contributions - x.contributions;
 }
-function renderList(targetDivId, data) {
-    var targetDiv = document.getElementById(targetDivId);
-    if (targetDiv != null) {
-        data.sort(sortByContributions);
-        var blockedUsers = new Array("gitter-badger");
-        for (var n = 0; n < data.length; n++) {
-            var contributor = data[n];
-            if (blockedUsers.indexOf(contributor.login) == -1) {
-                var contributorDiv = document.createElement('div');
-                var contributorHtml = '<a href=\"' + contributor.html_url + '\" target=\"_blank\">';
-                contributorHtml += contributor.login;
-                contributorHtml += '</a></br>';
-                contributorDiv.innerHTML = contributorHtml;
-                targetDiv.appendChild(contributorDiv);
+
+var ContributorWidget = function () {
+    function ContributorWidget(config) {
+        _classCallCheck(this, ContributorWidget);
+
+        this.configJson = config;
+        var jsonUrl = 'https://api.github.com/repos/' + this.configJson.repository + '/contributors';
+        var dataHandler = function dataHandler(widget, error, data) {
+            if (error !== null) {
+                console.log('Could not load data: ' + error);
+            } else {
+                widget.contributorsJson = data;
+                widget.render();
+            }
+        };
+        Json_1.getJsonCallback(this, jsonUrl, dataHandler);
+    }
+
+    _createClass(ContributorWidget, [{
+        key: "render",
+        value: function render() {
+            var data = this.contributorsJson;
+            var targetDiv = document.getElementById(this.configJson.targetDivId);
+            if (targetDiv != null) {
+                data.sort(sortByContributions);
+                var blockedUsers = new Array("gitter-badger");
+                for (var n = 0; n < data.length; n++) {
+                    var contributor = data[n];
+                    if (blockedUsers.indexOf(contributor.login) == -1) {
+                        var contributorDiv = document.createElement('div');
+                        var contributorHtml = '<a href=\"' + contributor.html_url + '\" target=\"_blank\">';
+                        contributorHtml += contributor.login;
+                        contributorHtml += '</a></br>';
+                        contributorDiv.innerHTML = contributorHtml;
+                        targetDiv.appendChild(contributorDiv);
+                    }
+                }
+            } else {
+                console.log('Target diff for contributions widget with id ' + this.configJson.targetDivId + ' not found.');
             }
         }
-    } else {
-        console.log('Target diff for contributions widget with id ' + targetDivId + ' not found.');
+    }]);
+
+    return ContributorWidget;
+}();
+
+function installGithubContributionWidget(targetDiv, repo) {
+    try {
+        var config = { "targetDivId": targetDiv, "repository": repo };
+        var widget = new ContributorWidget(config);
+        widget.render();
+    } catch (e) {
+        console.log(e.name + ': ' + e.message);
     }
 }
-function installContributionWidget(targetDiv, url) {
-    var dataHandler = function dataHandler(error, data) {
-        if (error !== null) {
-            console.log('Could not load data: ' + error);
-        } else {
-            renderList(targetDiv, data);
-        }
-    };
-    Json_1.getJson(url, dataHandler);
-}
-function installGithubContributionWidget(targetDiv, repo) {
-    installContributionWidget(targetDiv, 'https://api.github.com/repos/' + repo + '/contributors');
-}
-window.installContributionWidget = installContributionWidget;
 window.installGithubContributionWidget = installGithubContributionWidget;
 
 },{"./Json":1}]},{},[2])
