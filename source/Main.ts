@@ -22,6 +22,10 @@ class ContributorWidget {
 
     constructor(config: ContributorWidgetConfig) {
         this.configJson = config;
+        this.loadData();
+    }
+
+    loadData(): void {
         var jsonUrl: string =
             'https://api.github.com/repos/' + this.configJson.repository + '/contributors';
         var dataHandler = function(widget: any, error: string, data: Contributor[]){
@@ -62,7 +66,6 @@ function installGithubContributionWidget(targetDiv: string, repo: string): void 
     try {
         var config: ContributorWidgetConfig = { "targetDivId": targetDiv, "repository": repo};
         var widget: ContributorWidget = new ContributorWidget(config);
-        widget.render();
     } catch (e) {
         console.log(e.name + ': ' + e.message);
     }

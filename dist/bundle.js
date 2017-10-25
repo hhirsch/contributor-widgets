@@ -51,19 +51,24 @@ var ContributorWidget = function () {
         _classCallCheck(this, ContributorWidget);
 
         this.configJson = config;
-        var jsonUrl = 'https://api.github.com/repos/' + this.configJson.repository + '/contributors';
-        var dataHandler = function dataHandler(widget, error, data) {
-            if (error !== null) {
-                console.log('Could not load data: ' + error);
-            } else {
-                widget.contributorsJson = data;
-                widget.render();
-            }
-        };
-        Json_1.getJsonCallback(this, jsonUrl, dataHandler);
+        this.loadData();
     }
 
     _createClass(ContributorWidget, [{
+        key: "loadData",
+        value: function loadData() {
+            var jsonUrl = 'https://api.github.com/repos/' + this.configJson.repository + '/contributors';
+            var dataHandler = function dataHandler(widget, error, data) {
+                if (error !== null) {
+                    console.log('Could not load data: ' + error);
+                } else {
+                    widget.contributorsJson = data;
+                    widget.render();
+                }
+            };
+            Json_1.getJsonCallback(this, jsonUrl, dataHandler);
+        }
+    }, {
         key: "render",
         value: function render() {
             var data = this.contributorsJson;
@@ -95,7 +100,6 @@ function installGithubContributionWidget(targetDiv, repo) {
     try {
         var config = { "targetDivId": targetDiv, "repository": repo };
         var widget = new ContributorWidget(config);
-        widget.render();
     } catch (e) {
         console.log(e.name + ': ' + e.message);
     }
