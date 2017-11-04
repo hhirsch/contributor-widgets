@@ -1,6 +1,5 @@
 import { getJsonFromUrl } from "./Json";
 import { Contributor } from "./ContributorWidget";
-import { ContributorWidgetConfig } from "./ContributorWidget";
 import { ContributorWidget } from "./ContributorWidget";
 
 function installGithubContributionWidget(): void {

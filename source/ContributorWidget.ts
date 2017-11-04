@@ -5,10 +5,6 @@ function sortByContributions(x: Contributor, y: Contributor) {
   return  y.contributions - x.contributions;
 }
 
-export interface ContributorWidgetConfig {
-    targetDivId: string
-}
-
 export interface Contributor {
     contributions:number,
     html_url: string,
