@@ -7,14 +7,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Json_1 = require("./Json");
-function sortByContributions(x, y) {
-    return y.contributions - x.contributions;
-}
+var ContributorWidgetRenderer_1 = require("./ContributorWidgetRenderer");
 
 var ContributorWidget = function () {
     function ContributorWidget() {
         _classCallCheck(this, ContributorWidget);
 
+        this.renderer = new ContributorWidgetRenderer_1.ContributorWidgetRenderer();
         var widgetDivs = document.getElementsByClassName("gh-contrib-widget");
         for (var i = 0; i < widgetDivs.length; i++) {
             var targetDiv = widgetDivs.item(i);
@@ -26,25 +25,47 @@ var ContributorWidget = function () {
         key: "loadData",
         value: function loadData(targetDiv) {
             var jsonUrl = 'https://api.github.com/repos/' + targetDiv.dataset.repository + '/contributors';
-            var dataHandler = function dataHandler(widget, error, data) {
+            var dataHandler = function dataHandler(renderer, error, data) {
                 if (error !== null) {
                     console.log('Could not load data: ' + error);
                 } else {
-                    widget.contributorsJson = data;
-                    widget.render(targetDiv);
+                    renderer.render(targetDiv, data);
                 }
             };
-            Json_1.getJsonCallback(this, jsonUrl, dataHandler);
+            Json_1.getJsonCallback(this.renderer, jsonUrl, dataHandler);
         }
-    }, {
+    }]);
+
+    return ContributorWidget;
+}();
+
+exports.ContributorWidget = ContributorWidget;
+
+},{"./ContributorWidgetRenderer":2,"./Json":3}],2:[function(require,module,exports){
+"use strict";
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+Object.defineProperty(exports, "__esModule", { value: true });
+function sortByContributions(x, y) {
+    return y.contributions - x.contributions;
+}
+
+var ContributorWidgetRenderer = function () {
+    function ContributorWidgetRenderer() {
+        _classCallCheck(this, ContributorWidgetRenderer);
+    }
+
+    _createClass(ContributorWidgetRenderer, [{
         key: "render",
-        value: function render(targetDiv) {
-            var data = this.contributorsJson;
+        value: function render(targetDiv, contributors) {
             if (targetDiv != null) {
-                data.sort(sortByContributions);
+                contributors.sort(sortByContributions);
                 var blockedUsers = new Array("gitter-badger");
-                for (var n = 0; n < data.length; n++) {
-                    var contributor = data[n];
+                for (var n = 0; n < contributors.length; n++) {
+                    var contributor = contributors[n];
                     if (blockedUsers.indexOf(contributor.login) == -1) {
                         var contributorDiv = document.createElement('div');
                         var contributorHtml = '<a href=\"' + contributor.html_url + '\" target=\"_blank\">';
@@ -55,17 +76,17 @@ var ContributorWidget = function () {
                     }
                 }
             } else {
-                console.log('Target diff for contributions widget with id ' + this.configJson.targetDivId + ' not found.');
+                console.log('Target div not found.');
             }
         }
     }]);
 
-    return ContributorWidget;
+    return ContributorWidgetRenderer;
 }();
 
-exports.ContributorWidget = ContributorWidget;
+exports.ContributorWidgetRenderer = ContributorWidgetRenderer;
 
-},{"./Json":2}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -100,7 +121,7 @@ function getJsonFromUrl(url) {
 exports.getJsonFromUrl = getJsonFromUrl;
 ;
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -114,6 +135,6 @@ function installGithubContributionWidget() {
 }
 window.installGithubContributionWidget = installGithubContributionWidget;
 
-},{"./ContributorWidget":1}]},{},[3])
+},{"./ContributorWidget":1}]},{},[4])
 
 //# sourceMappingURL=bundle.js.map
