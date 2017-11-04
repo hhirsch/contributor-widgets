@@ -6,8 +6,7 @@ function sortByContributions(x: Contributor, y: Contributor) {
 }
 
 export interface ContributorWidgetConfig {
-    targetDivId: string,
-    repository:string,
+    targetDivId: string
 }
 
 export interface Contributor {
@@ -20,28 +19,30 @@ export class ContributorWidget {
     configJson: any;
     contributorsJson: Contributor[];
 
-    constructor(config: ContributorWidgetConfig) {
-        this.configJson = config;
-        this.loadData();
+    constructor() {
+        var widgetDivs = document.getElementsByClassName("gh-contrib-widget");
+        for(var i = 0; i < widgetDivs.length; i++) {
+            var targetDiv = widgetDivs.item(i);
+            this.loadData(targetDiv);
+        }
     }
 
-    loadData(): void {
+    loadData(targetDiv: any): void {
         var jsonUrl: string =
-            'https://api.github.com/repos/' + this.configJson.repository + '/contributors';
+            'https://api.github.com/repos/' + targetDiv.dataset.repository + '/contributors';
         var dataHandler = function(widget: any, error: string, data: Contributor[]){
             if (error !== null) {
                 console.log('Could not load data: ' + error);
             } else {
                 widget.contributorsJson = data;
-                widget.render();
+                widget.render(targetDiv);
             }
         }
         getJsonCallback(this, jsonUrl, dataHandler);
     }
 
-    render(): void {
+    render(targetDiv: any): void {
         var data = this.contributorsJson;
-        var targetDiv = document.getElementById(this.configJson.targetDivId);
         if (targetDiv != null) {
         data.sort(sortByContributions);
         var blockedUsers = new Array("gitter-badger");

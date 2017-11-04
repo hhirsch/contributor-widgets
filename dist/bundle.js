@@ -12,32 +12,34 @@ function sortByContributions(x, y) {
 }
 
 var ContributorWidget = function () {
-    function ContributorWidget(config) {
+    function ContributorWidget() {
         _classCallCheck(this, ContributorWidget);
 
-        this.configJson = config;
-        this.loadData();
+        var widgetDivs = document.getElementsByClassName("gh-contrib-widget");
+        for (var i = 0; i < widgetDivs.length; i++) {
+            var targetDiv = widgetDivs.item(i);
+            this.loadData(targetDiv);
+        }
     }
 
     _createClass(ContributorWidget, [{
         key: "loadData",
-        value: function loadData() {
-            var jsonUrl = 'https://api.github.com/repos/' + this.configJson.repository + '/contributors';
+        value: function loadData(targetDiv) {
+            var jsonUrl = 'https://api.github.com/repos/' + targetDiv.dataset.repository + '/contributors';
             var dataHandler = function dataHandler(widget, error, data) {
                 if (error !== null) {
                     console.log('Could not load data: ' + error);
                 } else {
                     widget.contributorsJson = data;
-                    widget.render();
+                    widget.render(targetDiv);
                 }
             };
             Json_1.getJsonCallback(this, jsonUrl, dataHandler);
         }
     }, {
         key: "render",
-        value: function render() {
+        value: function render(targetDiv) {
             var data = this.contributorsJson;
-            var targetDiv = document.getElementById(this.configJson.targetDivId);
             if (targetDiv != null) {
                 data.sort(sortByContributions);
                 var blockedUsers = new Array("gitter-badger");
@@ -103,10 +105,9 @@ exports.getJsonFromUrl = getJsonFromUrl;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var ContributorWidget_1 = require("./ContributorWidget");
-function installGithubContributionWidget(targetDiv, repo) {
+function installGithubContributionWidget() {
     try {
-        var config = { "targetDivId": targetDiv, "repository": repo };
-        var widget = new ContributorWidget_1.ContributorWidget(config);
+        var widget = new ContributorWidget_1.ContributorWidget();
     } catch (e) {
         console.log(e.name + ': ' + e.message);
     }

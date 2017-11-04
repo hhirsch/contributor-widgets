@@ -2,20 +2,19 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>Contribution Widget Test Page</title>
+        <title>Contributor Widget Test Page</title>
     </head>
     <body>
-        <h1>Contribution Widget</h1>
+        <h1>Contributor Widget</h1>
         <h1>Game</h1>
-        <div id="contributors">
+        <div class="gh-contrib-widget" data-repository="GlPortal/glPortal">
         </div>
         <h1>Engine</h1>
-        <div id="contributors-radix">
+        <div class="gh-contrib-widget" data-repository="GlPortal/RadixEngine">
         </div>
         <script src="./bundle.js"></script>
         <script>
-         installGithubContributionWidget('contributors', 'GlPortal/glPortal');
-         installGithubContributionWidget('contributors-radix', 'GlPortal/RadixEngine');
+         installGithubContributionWidget();
         </script>
     </body>
 </html>
