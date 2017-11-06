@@ -126,14 +126,14 @@ exports.getJsonFromUrl = getJsonFromUrl;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var ContributorWidget_1 = require("./ContributorWidget");
-function installGithubContributionWidget() {
+function installGithubContributorWidget() {
     try {
         var widget = new ContributorWidget_1.ContributorWidget();
     } catch (e) {
         console.log(e.name + ': ' + e.message);
     }
 }
-window.installGithubContributionWidget = installGithubContributionWidget;
+window.installGithubContributorWidget = installGithubContributorWidget;
 
 },{"./ContributorWidget":1}]},{},[4])
 

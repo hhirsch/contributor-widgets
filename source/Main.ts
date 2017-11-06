@@ -1,7 +1,7 @@
 import { getJsonFromUrl } from "./Json";
 import { ContributorWidget } from "./ContributorWidget";
 
-function installGithubContributionWidget(): void {
+function installGithubContributorWidget(): void {
     try {
         var widget: ContributorWidget = new ContributorWidget();
     } catch (e) {
@@ -9,4 +9,4 @@ function installGithubContributionWidget(): void {
     }
 }
 
-(<any>window).installGithubContributionWidget = installGithubContributionWidget;
+(<any>window).installGithubContributorWidget = installGithubContributorWidget;
