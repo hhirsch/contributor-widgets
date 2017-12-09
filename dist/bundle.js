@@ -89,7 +89,7 @@ var ContributorWidget = function () {
 
 exports.ContributorWidget = ContributorWidget;
 
-},{"./ContributorWidgetRenderer":3,"./Json":4}],3:[function(require,module,exports){
+},{"./ContributorWidgetRenderer":3,"./Json":5}],3:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -98,6 +98,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Contributor_1 = require("./Contributor");
+var HtmlService_1 = require("./HtmlService");
 function sortByContributions(x, y) {
     return y.contributions - x.contributions;
 }
@@ -110,17 +111,17 @@ var ContributorWidgetRenderer = function () {
     _createClass(ContributorWidgetRenderer, [{
         key: "render",
         value: function render(targetDiv, contributors) {
+            var htmlService;
+            var blockedUsers = new Array("gitter-badger");
+            htmlService = new HtmlService_1.HtmlService();
             if (targetDiv != null) {
                 contributors.sort(sortByContributions);
-                var blockedUsers = new Array("gitter-badger");
                 for (var n = 0; n < contributors.length; n++) {
-                    var contributor;
-                    contributor = new Contributor_1.Contributor(contributors[n]);
+                    var contributor = new Contributor_1.Contributor(contributors[n]);
                     if (!contributor.isOnList(blockedUsers)) {
                         var contributorDiv = document.createElement('div');
-                        var contributorHtml = '<a href=\"' + contributor.getProfileUrl() + '\" target=\"_blank\">';
-                        contributorHtml += contributor.getName();
-                        contributorHtml += '</a></br>';
+                        var contributorHtml = htmlService.getAnchorHtml(contributor.getProfileUrl(), contributor.getName());
+                        contributorHtml += '</br>';
                         contributorDiv.innerHTML = contributorHtml;
                         targetDiv.appendChild(contributorDiv);
                     }
@@ -136,7 +137,36 @@ var ContributorWidgetRenderer = function () {
 
 exports.ContributorWidgetRenderer = ContributorWidgetRenderer;
 
-},{"./Contributor":1}],4:[function(require,module,exports){
+},{"./Contributor":1,"./HtmlService":4}],4:[function(require,module,exports){
+"use strict";
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+Object.defineProperty(exports, "__esModule", { value: true });
+
+var HtmlService = function () {
+    function HtmlService() {
+        _classCallCheck(this, HtmlService);
+    }
+
+    _createClass(HtmlService, [{
+        key: "getAnchorHtml",
+        value: function getAnchorHtml(url, content) {
+            var html = '<a href=\"' + url + '\" target=\"_blank\">';
+            html += content;
+            html += '</a>';
+            return html;
+        }
+    }]);
+
+    return HtmlService;
+}();
+
+exports.HtmlService = HtmlService;
+
+},{}],5:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -171,7 +201,7 @@ function getJsonFromUrl(url) {
 exports.getJsonFromUrl = getJsonFromUrl;
 ;
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -185,6 +215,6 @@ function installGithubContributorWidget() {
 }
 window.installGithubContributorWidget = installGithubContributorWidget;
 
-},{"./ContributorWidget":2}]},{},[5])
+},{"./ContributorWidget":2}]},{},[6])
 
 //# sourceMappingURL=bundle.js.map
