@@ -1,6 +1,7 @@
 import { getJsonFromUrl } from "./Json";
 import { getJsonCallback } from "./Json";
 import { Contributor } from "./Contributor";
+import { ContributorJson } from "./ContributorJson";
 import { ContributorWidgetRenderer } from "./ContributorWidgetRenderer";
 
 export class ContributorWidget {
@@ -20,7 +21,7 @@ export class ContributorWidget {
     loadData(targetDiv: any): void {
         var jsonUrl: string =
             'https://api.github.com/repos/' + targetDiv.dataset.repository + '/contributors';
-        var dataHandler = function(renderer: ContributorWidgetRenderer, error: string, data: Contributor[]){
+        var dataHandler = function(renderer: ContributorWidgetRenderer, error: string, data: ContributorJson[]){
             if (error !== null) {
                 console.log('Could not load data: ' + error);
             } else {

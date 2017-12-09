@@ -6,6 +6,54 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 Object.defineProperty(exports, "__esModule", { value: true });
+
+var Contributor = function () {
+    function Contributor(contributorJson) {
+        _classCallCheck(this, Contributor);
+
+        this.name = contributorJson.login;
+        this.profileUrl = contributorJson.html_url;
+        this.contributions = contributorJson.contributions;
+    }
+
+    _createClass(Contributor, [{
+        key: "isOnList",
+        value: function isOnList(userList) {
+            if (userList.indexOf(this.name) == -1) {
+                return false;
+            }
+            return true;
+        }
+    }, {
+        key: "getName",
+        value: function getName() {
+            return this.name;
+        }
+    }, {
+        key: "getProfileUrl",
+        value: function getProfileUrl() {
+            return this.profileUrl;
+        }
+    }, {
+        key: "getContributions",
+        value: function getContributions() {
+            return this.contributions;
+        }
+    }]);
+
+    return Contributor;
+}();
+
+exports.Contributor = Contributor;
+
+},{}],2:[function(require,module,exports){
+"use strict";
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+Object.defineProperty(exports, "__esModule", { value: true });
 var Json_1 = require("./Json");
 var ContributorWidgetRenderer_1 = require("./ContributorWidgetRenderer");
 
@@ -41,7 +89,7 @@ var ContributorWidget = function () {
 
 exports.ContributorWidget = ContributorWidget;
 
-},{"./ContributorWidgetRenderer":2,"./Json":3}],2:[function(require,module,exports){
+},{"./ContributorWidgetRenderer":3,"./Json":4}],3:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -49,6 +97,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var Contributor_1 = require("./Contributor");
 function sortByContributions(x, y) {
     return y.contributions - x.contributions;
 }
@@ -65,11 +114,12 @@ var ContributorWidgetRenderer = function () {
                 contributors.sort(sortByContributions);
                 var blockedUsers = new Array("gitter-badger");
                 for (var n = 0; n < contributors.length; n++) {
-                    var contributor = contributors[n];
-                    if (blockedUsers.indexOf(contributor.login) == -1) {
+                    var contributor;
+                    contributor = new Contributor_1.Contributor(contributors[n]);
+                    if (!contributor.isOnList(blockedUsers)) {
                         var contributorDiv = document.createElement('div');
-                        var contributorHtml = '<a href=\"' + contributor.html_url + '\" target=\"_blank\">';
-                        contributorHtml += contributor.login;
+                        var contributorHtml = '<a href=\"' + contributor.getProfileUrl() + '\" target=\"_blank\">';
+                        contributorHtml += contributor.getName();
                         contributorHtml += '</a></br>';
                         contributorDiv.innerHTML = contributorHtml;
                         targetDiv.appendChild(contributorDiv);
@@ -86,7 +136,7 @@ var ContributorWidgetRenderer = function () {
 
 exports.ContributorWidgetRenderer = ContributorWidgetRenderer;
 
-},{}],3:[function(require,module,exports){
+},{"./Contributor":1}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -121,7 +171,7 @@ function getJsonFromUrl(url) {
 exports.getJsonFromUrl = getJsonFromUrl;
 ;
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -135,6 +185,6 @@ function installGithubContributorWidget() {
 }
 window.installGithubContributorWidget = installGithubContributorWidget;
 
-},{"./ContributorWidget":1}]},{},[4])
+},{"./ContributorWidget":2}]},{},[5])
 
 //# sourceMappingURL=bundle.js.map
